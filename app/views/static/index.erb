@@ -1,2 +1,10 @@
-<h1>Hello World</h1>
-<p>See Me in views/static/index.html.erb</p>
+<h1>Welcome to Quora Clone</h1>
+<% if logged_in? %>
+	<p>Welcome back, <%= current_user.full_name %></p>
+	<form action="/logout" method="post">
+		<input type="submit" value="Logout">
+	</form>
+<% else %>	
+	<a href="/login">Login</a>
+	<a href="/signup">Sign up for an account</a>
+<% end %>

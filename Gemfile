@@ -17,6 +17,7 @@ gem 'sinatra-activerecord'
 
 # Adding Database elements
 gem 'pg'
+gem 'bcrypt'
 
 # Adding rake for management
 gem 'rake'
@@ -27,6 +28,7 @@ gem 'rspec'
 group :development, :test do
 	# Adding shotgun for local web hosting
 	gem 'shotgun'
+  gem 'byebug'
 end
 
 group :production do
