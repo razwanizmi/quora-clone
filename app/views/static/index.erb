@@ -1,10 +1,6 @@
-<h1>Welcome to Quora Clone</h1>
+<p><a href="/questions/index">Check out our top stories</a></p>
 <% if logged_in? %>
-	<p>Welcome back, <%= current_user.full_name %></p>
-	<form action="/logout" method="post">
-		<input type="submit" value="Logout">
-	</form>
-<% else %>	
-	<a href="/login">Login</a>
-	<a href="/signup">Sign up for an account</a>
+<p><a href="questions/new">Ask a question</a></p>
+<p><a href="/users/<%= current_user.id %>/questions/index">My questions</a></p>
+<p><a href="/users/<%= current_user.id %>/answers/index">My answers</a></p>
 <% end %>

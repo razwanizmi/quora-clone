@@ -1,8 +1,8 @@
-get '/signup' do
-  erb :"static/signup"
+get '/users/new' do
+  erb :"users/signup"
 end
 
-post '/signup' do
+post '/users' do
   user = User.new(params[:user])
   if user.save
     redirect '/'
@@ -12,28 +12,14 @@ post '/signup' do
   end
 end
 
-get '/login' do
-  erb :"static/login"
-end
-
-post '/login' do
-  user = User.find_by(email: params[:user][:email]).try(:authenticate, params[:user][:password])
-  if user
-    session[:user_id] = user.id
-    redirect '/'
-  else
-    @message = "Error logging in. Please ensure email and password are correct."
-    erb :"static/login"
-  end
-end
-
-post '/logout' do
-  if logged_in?
-    session[:user_id] = nil
-    redirect '/'
-  end
-end
-
 get '/users/:id' do
-  erb :"user/profile"
+  erb :"users/profile"
+end
+
+get '/users/:id/questions/index' do
+  erb :"questions/my_questions"
+end
+
+get '/users/:id/answers/index' do
+  erb :"answers/my_answers"
 end

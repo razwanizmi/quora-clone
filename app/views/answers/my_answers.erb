@@ -1,0 +1,20 @@
+<h1>These are answers by <%= current_user.full_name %></h1>
+<% if current_user.answers.count != 0 %>
+	<table style="width:100%; text-align:left">
+		<tr>
+			<th>Title</th>
+			<th>Question</th>
+			<th>Answer</th>
+		</tr>
+
+		<% current_user.answers.each do |row| %>
+			<tr>
+				<td><a href="/questions/<%=row.question_id%>"><%=row.question.title%></a></td>
+				<td><%=row.question.description%></td>
+				<td><%=row.description%></td>
+			</tr>
+		<% end %>
+	</table>
+<% else %>
+<p><%= current_user.full_name %> have not answered any questions. We need your wisdom!</p>
+<% end %>

@@ -1,0 +1,16 @@
+<h1>These are all the questions</h1>
+<table style="width:100%; text-align:left">
+	<tr>
+		<th>Title</th>
+		<th>Question</th>
+		<th>Asked by</th>
+	</tr>
+
+	<% Question.all.each do |row| %>
+		<tr>
+			<td><a href="/questions/<%=row.id%>"><%=row.title%></a></td>
+			<td><%=row.description%></td>
+			<td><%=row.user.full_name%></td>
+		</tr>
+	<% end %>
+</table>

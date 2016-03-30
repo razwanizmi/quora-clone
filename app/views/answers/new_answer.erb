@@ -1,0 +1,6 @@
+<h1>Currently answering the following question:</h1>
+<p><%= Question.find(params[:question_id]).description %></p>
+<form method=post action='/questions/<%=params[:question_id]%>/answers'>
+	<input type=text placeholder="Your answer" name="answer[description]" style="width:500px; height:40px"></br>
+	<input type=submit value="Submit">
+</form>

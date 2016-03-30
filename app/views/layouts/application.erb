@@ -3,6 +3,19 @@
 		<title>Welcome to Kuora</title>
 	</head>
 	<body>
+		<h1>Welcome to Kuora</h1>
+		<% if logged_in? %>
+			<p>Welcome back, <%= current_user.full_name %></p>
+			<form action="/sessions/<%=current_user.id%>" method="post">
+				<input type="submit" value="Logout">
+			</form>
+		<% else %>	
+			<p><a href="/sessions/new">Login</a></p>
+			<p><a href="/users/new">Sign up for an account</a></p>
+		<% end %>
+		<form action="/" method="get">
+		<input type="submit" value="Home">
+	</form>
 		<%= yield %>
 	</body>
 </html>
