@@ -5,13 +5,26 @@
 <p>Answers:</p> 
 <% if @question.answers.all.count != 0 %>
 	<% @question.answers.all.each do |row| %>
-		<p><%= row.description %></p> 
+		<p><%= row.description %></p>
 		<p style="font-size:10px">Answered by: <%= row.user.full_name %></p>
+		<% if row.answer_votes.find_by(user_id: current_user.id) == nil %>
+			<form action="/users/<%= current_user.id %>/answers/<%= row.id %>/answer_votes" method="post">
+			<input name="vote" type="submit" value="Upvote">
+			<input type="hidden" name="question_id" value="<%=@question.id%>">
+			</form>
+			<form action="/users/<%= current_user.id %>/answers/<%= row.id %>/answer_votes" method="post">
+			<input name="vote" type="submit" value="Downvote">
+			<input type="hidden" name="question_id" value="<%=@question.id%>">
+			</form>
+		<% else %>
+			<p style="font-size:10px">Upvotes: <%= AnswerVote.where(answer_id: row.id, upvote: true).all.count %></p>
+			<p style="font-size:10px">Downvotes: <%= AnswerVote.where(answer_id: row.id, upvote: false).all.count %></p>
+		<% end %>
 	<% end %>
 <% else %>
 	<p>No answers to this question yet. Be the first to contribute!</p>
 <%end%>
 
-<form action="/questions/<%=@question.id%>/answers/new" method="get">
+<br><br><form action="/questions/<%=@question.id%>/answers/new" method="get">
 	<input type="submit" value="Add an answer">
 </form>

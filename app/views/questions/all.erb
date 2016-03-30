@@ -1,9 +1,10 @@
 <h1>These are all the questions</h1>
-<table style="width:100%; text-align:left">
+<table border="1px" style="width:100%; text-align:left">
 	<tr>
 		<th>Title</th>
 		<th>Question</th>
 		<th>Asked by</th>
+		<th>Vote</th>
 	</tr>
 
 	<% Question.all.each do |row| %>
@@ -11,6 +12,19 @@
 			<td><a href="/questions/<%=row.id%>"><%=row.title%></a></td>
 			<td><%=row.description%></td>
 			<td><%=row.user.full_name%></td>
+			<td>
+			<% if row.question_votes.find_by(user_id: current_user.id) == nil %>
+				<form action="/users/<%= current_user.id %>/questions/<%= row.id %>/question_votes" method="post">
+				<input name= "vote" type="submit" value="Upvote">
+				</form>
+				<form action="/users/<%= current_user.id %>/questions/<%= row.id %>/question_votes" method="post">
+				<input name="vote" type="submit" value="Downvote">
+				</form>
+			<% else %>
+				<p style="font-size:10px">Upvotes: <%= QuestionVote.where(question_id: row.id, upvote: true).all.count %></p>
+				<p style="font-size:10px">Downvotes: <%= QuestionVote.where(question_id: row.id, upvote: false).all.count %></p>
+			<% end %>
+			</td>
 		</tr>
 	<% end %>
 </table>
