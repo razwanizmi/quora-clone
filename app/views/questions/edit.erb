@@ -1,0 +1,8 @@
+<h1>Question ID: <%= @question.id %></h1>
+<br>
+<form method=post action='/questions/<%= @question.id %>'>
+	<input type=text placeholder="<%= @question.title %>" name="question[title]" style="width:500px"><br>
+	<input type=text placeholder="<%= @question.description %>" name="question[description]" style="width:500px; height:40px"></br>
+	<input type="hidden" name="_method" value="put" >
+	<input type=submit value="Submit">
+</form>

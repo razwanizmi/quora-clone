@@ -3,28 +3,45 @@
 <p>Question: <%= @question.description %></p>
 <p style="font-size:10px">Asked by: <%= @question.user.full_name %></p>
 <p>Answers:</p> 
-<% if @question.answers.all.count != 0 %>
-	<% @question.answers.all.each do |row| %>
+<% if @answers.count != 0 %>
+	<% @answers.each do |row| %>
 		<p><%= row.description %></p>
-		<p style="font-size:10px">Answered by: <%= row.user.full_name %></p>
-		<% if row.answer_votes.find_by(user_id: current_user.id) == nil %>
-			<form action="/users/<%= current_user.id %>/answers/<%= row.id %>/answer_votes" method="post">
-			<input name="vote" type="submit" value="Upvote">
-			<input type="hidden" name="question_id" value="<%=@question.id%>">
-			</form>
-			<form action="/users/<%= current_user.id %>/answers/<%= row.id %>/answer_votes" method="post">
-			<input name="vote" type="submit" value="Downvote">
-			<input type="hidden" name="question_id" value="<%=@question.id%>">
-			</form>
-		<% else %>
-			<p style="font-size:10px">Upvotes: <%= AnswerVote.where(answer_id: row.id, upvote: true).all.count %></p>
-			<p style="font-size:10px">Downvotes: <%= AnswerVote.where(answer_id: row.id, upvote: false).all.count %></p>
+		<% if current_user %>
+			<% if row.user_id == current_user.id %>
+				<form style="display:inline-block" action="/answers/<%= row.id %>/edit" method="get">
+					<input type="submit" value="Edit">
+				</form>
+				<form form style="display:inline-block" action="/answers/<%= row.id %>" method="post">
+					<input type="hidden" name="_method" value="delete">
+					<input type="hidden" name="question_id" value="<%= @question.id %>">
+					<input type="submit" value="Delete">
+				</form>
+			<% end %>
 		<% end %>
-	<% end %>
+			<p style="font-size:10px">Answered by: <%= row.user.full_name %></p>
+		<% if current_user %>
+			<% if row.answer_votes.find_by(user_id: current_user.id) == nil %>
+				<form style="display:inline-block" action="/users/<%= current_user.id %>/answers/<%= row.id %>/answer_votes" method="post">
+					<input name="vote" type="submit" value="Upvote">
+					<input type="hidden" name="question_id" value="<%=@question.id%>">
+				</form>
+				<form style="display:inline-block" action="/users/<%= current_user.id %>/answers/<%= row.id %>/answer_votes" method="post">
+					<input name="vote" type="submit" value="Downvote">
+					<input type="hidden" name="question_id" value="<%=@question.id%>">
+				</form>
+			<% else %>
+				<p style="font-size:10px">Upvotes: <%= AnswerVote.where(answer_id: row.id, upvote: true).all.count %></p>
+				<p style="font-size:10px">Downvotes: <%= AnswerVote.where(answer_id: row.id, upvote: false).all.count %></p>
+			<% end %>
+		<% end %>	
+	<% end %>	
+	<%= will_paginate @answers %>
 <% else %>
 	<p>No answers to this question yet. Be the first to contribute!</p>
 <%end%>
 
-<br><br><form action="/questions/<%=@question.id%>/answers/new" method="get">
-	<input type="submit" value="Add an answer">
-</form>
+<% if current_user %>
+	<br><form action="/questions/<%=@question.id%>/answers/new" method="get">
+		<input type="submit" value="Add an answer">
+	</form>
+<%end %>

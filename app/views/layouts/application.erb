@@ -1,21 +1,25 @@
 <html>
 	<head>
+		<link href='/css/application.css' rel='stylesheet' type='text/css' />
 		<title>Welcome to Kuora</title>
 	</head>
 	<body>
 		<h1>Welcome to Kuora</h1>
 		<% if logged_in? %>
 			<p>Welcome back, <%= current_user.full_name %></p>
-			<form action="/sessions/<%=current_user.id%>" method="post">
+			<form style="display:inline-block" action="/" method="get">
+				<input type="submit" value="Home">
+			</form>
+			<form style="display:inline-block" action="/sessions/<%=current_user.id%>" method="post">
 				<input type="submit" value="Logout">
 			</form>
 		<% else %>	
+			<form style="display:inline-block" action="/" method="get">
+				<input type="submit" value="Home">
+			</form>
 			<p><a href="/sessions/new">Login</a></p>
 			<p><a href="/users/new">Sign up for an account</a></p>
 		<% end %>
-		<form action="/" method="get">
-		<input type="submit" value="Home">
-		</form>
 		<%= yield %>
 	</body>
 </html>

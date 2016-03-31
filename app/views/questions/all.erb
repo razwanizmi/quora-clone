@@ -7,24 +7,45 @@
 		<th>Vote</th>
 	</tr>
 
-	<% Question.all.each do |row| %>
+	<% @questions.each do |row| %>
 		<tr>
 			<td><a href="/questions/<%=row.id%>"><%=row.title%></a></td>
 			<td><%=row.description%></td>
 			<td><%=row.user.full_name%></td>
 			<td>
-			<% if row.question_votes.find_by(user_id: current_user.id) == nil %>
-				<form action="/users/<%= current_user.id %>/questions/<%= row.id %>/question_votes" method="post">
-				<input name= "vote" type="submit" value="Upvote">
-				</form>
-				<form action="/users/<%= current_user.id %>/questions/<%= row.id %>/question_votes" method="post">
-				<input name="vote" type="submit" value="Downvote">
-				</form>
-			<% else %>
-				<p style="font-size:10px">Upvotes: <%= QuestionVote.where(question_id: row.id, upvote: true).all.count %></p>
-				<p style="font-size:10px">Downvotes: <%= QuestionVote.where(question_id: row.id, upvote: false).all.count %></p>
+			<% if current_user %>
+				<% if row.question_votes.find_by(user_id: current_user.id) == nil %>
+					<form style="display:inline-block" action="/users/<%= current_user.id %>/questions/<%= row.id %>/question_votes" method="post">
+					<input name= "vote" type="submit" value="Upvote">
+					</form>
+					<form style="display:inline-block" action="/users/<%= current_user.id %>/questions/<%= row.id %>/question_votes" method="post">
+					<input name="vote" type="submit" value="Downvote">
+					</form>
+					<% if row.user_id == current_user.id %>
+						<form style="display:inline-block" action="/questions/<%= row.id %>/edit" method="get">
+						<input type="submit" value="Edit">
+						</form>
+						<form style="display:inline-block" action="/questions/<%= row.id %>" method="post">
+						<input type="submit" value="Delete">
+						<input type="hidden" name="_method" value="delete">
+						</form>
+					<% end %>
+				<% else %>
+					<p style="font-size:10px">Upvotes: <%= QuestionVote.where(question_id: row.id, upvote: true).all.count %></p>
+					<p style="font-size:10px">Downvotes: <%= QuestionVote.where(question_id: row.id, upvote: false).all.count %></p>
+					<% if row.user_id == current_user.id %>
+						<form style="display:inline-block" action="/questions/<%= row.id %>/edit" method="get">
+						<input type="submit" value="Edit">
+						</form>
+						<form style="display:inline-block" action="/questions/<%= row.id %>" method="post">
+						<input type="submit" value="Delete">
+						<input type="hidden" name="_method" value="delete">
+						</form>
+					<% end %>
+				<% end %>
 			<% end %>
 			</td>
 		</tr>
 	<% end %>
 </table>
+<%= will_paginate @questions %>

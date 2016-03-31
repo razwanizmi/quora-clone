@@ -1,5 +1,5 @@
 class Answer < ActiveRecord::Base
   belongs_to :user
   belongs_to :question
-  has_many :answer_votes
+  has_many :answer_votes, dependent: :destroy
 end

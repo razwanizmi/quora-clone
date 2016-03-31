@@ -1,0 +1,7 @@
+<h1>Currently answering the following question:</h1>
+<p><%= @answer.question.description %></p>
+<form method=post action='/answers/<%= @answer.id %>'>
+	<input type=text placeholder="<%= @answer.description %>" name="answer[description]" style="width:500px; height:40px"></br>
+	<input type="hidden" name="_method" value="put">
+	<input type=submit value="Submit">
+</form>
